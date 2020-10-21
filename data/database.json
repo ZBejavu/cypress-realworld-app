@@ -13,7 +13,20 @@
       "defaultPrivacyLevel": "public",
       "balance": 168137,
       "createdAt": "2019-08-27T23:47:05.637Z",
-      "modifiedAt": "2020-05-21T11:02:22.857Z"
+      "modifiedAt": "2020-05-21T11:02:22.857Z",
+      "privileges": ["manager"]
+    },
+    {
+      "id": "TfJK_4UnN",
+      "uuid": "a9c0b431-c075-425d-a306-a1c7d5af3f13",
+      "firstName": "zach",
+      "lastName": "asdf",
+      "username": "zach",
+      "password": "$2a$10$ie6yIJjzG/V9SM3XyfEuHe6q.RtfUgQSsSjPTZ2T5uuWKhi8sMJ2a",
+      "balance": 5000000,
+      "createdAt": "2020-10-21T11:02:50.568Z",
+      "modifiedAt": "2020-10-21T11:02:50.568Z",
+      "privileges":  ["manager","business"]
     },
     {
       "id": "qywYp6hS0U",
@@ -28,7 +41,8 @@
       "defaultPrivacyLevel": "private",
       "balance": 101805,
       "createdAt": "2019-09-09T13:48:45.489Z",
-      "modifiedAt": "2020-05-21T02:34:01.483Z"
+      "modifiedAt": "2020-05-21T02:34:01.483Z",
+      "privileges": []
     },
     {
       "id": "bDjUb4ir5O",
@@ -43,7 +57,8 @@
       "defaultPrivacyLevel": "private",
       "balance": 164867,
       "createdAt": "2019-09-15T04:44:05.536Z",
-      "modifiedAt": "2020-05-21T18:25:10.341Z"
+      "modifiedAt": "2020-05-21T18:25:10.341Z",
+      "privileges": []
     },
     {
       "id": "24VniajY1y",
@@ -58,7 +73,8 @@
       "defaultPrivacyLevel": "private",
       "balance": 145779,
       "createdAt": "2020-03-06T02:15:42.584Z",
-      "modifiedAt": "2020-05-21T09:25:42.974Z"
+      "modifiedAt": "2020-05-21T09:25:42.974Z",
+      "privileges": []
     },
     {
       "id": "tsHF6_D5oQ",
@@ -73,7 +89,8 @@
       "defaultPrivacyLevel": "contacts",
       "balance": 75369,
       "createdAt": "2020-02-11T21:26:46.510Z",
-      "modifiedAt": "2020-05-21T15:15:33.944Z"
+      "modifiedAt": "2020-05-21T15:15:33.944Z",
+      "privileges": []
     }
   ],
   "contacts": [
