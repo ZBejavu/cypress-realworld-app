@@ -68,7 +68,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Bank Accounts" />
     </ListItem>
-    {( currentUser.privileges && currentUser.privileges.includes('manager') ) &&
+    {(currentUser.privileges.includes('manager') ) &&
     <ListItem
       button
       // @ts-ignore
