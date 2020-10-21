@@ -133,6 +133,7 @@ export const createFakeUser = (): User => {
     balance: faker.random.number({ min: 10000, max: 200000 }),
     createdAt: faker.date.past(),
     modifiedAt: faker.date.recent(),
+    privileges:[]
   };
 };
 

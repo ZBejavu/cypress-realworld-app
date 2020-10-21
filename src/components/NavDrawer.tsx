@@ -20,12 +20,13 @@ import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import { Grid, Avatar, Typography } from "@material-ui/core";
 import { formatAmount } from "../utils/transactionUtils";
 import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
-
+import { User, DefaultPrivacyLevel, UserSettingsPayload } from "../models";
 const drawerWidth = 240;
 
 export const mainListItems = (
   toggleDrawer: ((event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void) | undefined,
-  showTemporaryDrawer: Boolean
+  showTemporaryDrawer: Boolean,
+  currentUser: User
 ) => (
   <div>
     <ListItem
@@ -67,6 +68,21 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Bank Accounts" />
     </ListItem>
+    {( currentUser.privileges && currentUser.privileges.includes('manager') ) &&
+    <ListItem
+      button
+      // @ts-ignore
+      onClick={() => showTemporaryDrawer && toggleDrawer()}
+      component={RouterLink}
+      to="/managertab"  //todo: handle
+      data-test="sidenav-bankaccounts" //todo: handle
+    >
+      <ListItemIcon>
+        <AccountBalanceIcon />
+      </ListItemIcon>
+      <ListItemText primary="Manager Tab" />
+    </ListItem>
+    }
     <ListItem
       button
       // @ts-ignore
@@ -160,13 +176,12 @@ const NavDrawer: React.FC<Props> = ({
   toggleDrawer,
   closeMobileDrawer,
   drawerOpen,
-  authService,
+  authService
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [authState, sendAuth] = useService(authService);
   const showTemporaryDrawer = useMediaQuery(theme.breakpoints.only("xs"));
-
   const currentUser = authState?.context?.user;
   const signOut = () => sendAuth("LOGOUT");
 
@@ -249,9 +264,12 @@ const NavDrawer: React.FC<Props> = ({
         <Grid item>
           <Divider />
         </Grid>
+        {
+          currentUser &&
         <Grid item>
-          <List>{mainListItems(toggleDrawer, showTemporaryDrawer)}</List>
+          <List>{mainListItems(toggleDrawer, showTemporaryDrawer, currentUser)}</List>
         </Grid>
+        }
         <Grid item>
           <Divider />
         </Grid>

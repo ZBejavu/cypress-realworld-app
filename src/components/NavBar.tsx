@@ -18,7 +18,7 @@ import { useService } from "@xstate/react";
 import TransactionNavTabs from "./TransactionNavTabs";
 import { ReactComponent as RWALogo } from "../svgs/rwa-logo.svg";
 import { ReactComponent as RWALogoIcon } from "../svgs/rwa-icon-logo.svg";
-
+import { User, DefaultPrivacyLevel, UserSettingsPayload } from "../models";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +76,7 @@ interface NavBarProps {
   notificationsService: Interpreter<DataContext, any, DataEvents, any>;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ drawerOpen, toggleDrawer, notificationsService }) => {
+const NavBar: React.FC<NavBarProps> = ({ drawerOpen, toggleDrawer, notificationsService}) => {
   const match = useLocation();
   const classes = useStyles();
   const theme = useTheme();
@@ -87,6 +87,7 @@ const NavBar: React.FC<NavBarProps> = ({ drawerOpen, toggleDrawer, notifications
 
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}>
+      
       <Toolbar className={classes.toolbar}>
         <IconButton
           data-test="sidenav-toggle"

@@ -3,7 +3,7 @@ export enum DefaultPrivacyLevel {
   private = "private",
   contacts = "contacts",
 }
-
+export type userPrivileges = 'manager' | 'business' | 'premium';
 export interface User {
   id: string;
   uuid: string;
@@ -15,6 +15,7 @@ export interface User {
   phoneNumber: string;
   balance: number;
   avatar: string;
+  privileges:userPrivileges[];
   defaultPrivacyLevel: DefaultPrivacyLevel;
   createdAt: Date;
   modifiedAt: Date;
