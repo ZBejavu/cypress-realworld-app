@@ -74,6 +74,7 @@
     "nodemon": "2.0.4",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
+    "pure-react-carousel": "^1.27.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-infinite-calendar": "2.3.1",

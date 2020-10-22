@@ -10,6 +10,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import { Link as RouterLink, useRouteMatch, Route } from "react-router-dom";
 
 export interface UserSettingsProps {
   authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
@@ -19,8 +20,9 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const [FinanceDataTable, setFinanceDataTable] = useState<FinanceData[]>([]);
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<
-    "symbol" | "companyName" | "iexRealtimePrice" | "previousClose" | "growth"
-  >("companyName");
+    "symbol" | "companyName" | "iexRealtimePrice" | "previousClose" | "growth">("companyName");
+
+let match = useRouteMatch();
 
   interface FinanceData {
     symbol: string;
@@ -35,7 +37,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const fetchData = async () => {
     let dataTable: FinanceData[] = [];
     const { data } = await axios.get(
-      `https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_5f8efe0e7fa24952b30e15e2ec890afe&symbols=TSLA,MCD,AMZN,FB,AAPL,UAL,INTC,Pins,NFLX,RCL`
+      `https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_d9db58af65374520ace4898a24532312&symbols=TSLA,MCD,AMZN,FB,AAPL,UAL,INTC,Pins,NFLX,RCL`
     );
     for (const [key, value] of Object.entries<any>(data)) {
       let { symbol, companyName, iexRealtimePrice, previousClose }: FinanceData = value.quote;
@@ -119,10 +121,11 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
               return (
                 <TableRow style={{ background: "white" }}>
                   <TableCell>
-                    <Button style={{ fontSize: "14px" }} size="small" color="primary"
-                    >
+                    <RouterLink to={`${match.url}/${e.symbol}`}>
+                    <Button style={{ fontSize: "14px" }} size="small" color="primary">
                       Trade
                     </Button>
+                    </RouterLink>
                   </TableCell>
                   <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.symbol}</TableCell>
