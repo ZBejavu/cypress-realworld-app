@@ -123,9 +123,11 @@ function sortSymbols(array:symbols[], comparator:any) {
     <div>
         <h1>Welcome to the Stock Investment Page</h1>
         <TableContainer>
-          <Table>
+          <Table
+          size='small'
+          style={{border:'1px solid #DDDDDD'}}>
         <TableHead>
-          <TableRow>
+          <TableRow style={{background:'#f1f1f1'}}>
         <TableCell>Action</TableCell>
         {HeadCells.map(cell => {
         return (
@@ -147,7 +149,7 @@ function sortSymbols(array:symbols[], comparator:any) {
         {sortSymbols(symbolsTable, getComparator(order, orderBy)).map(e => {
 
         return (
-<TableRow>
+<TableRow style={{background:'white'}}>
 <TableCell>
 <Button style={{fontSize:"14px"}} size="small" color="primary">Trade</Button>
 </TableCell>
