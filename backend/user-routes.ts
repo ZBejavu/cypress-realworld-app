@@ -29,6 +29,12 @@ router.get("/", ensureAuthenticated, (req, res) => {
   res.status(200).json({ results: users });
 });
 
+router.get("/all", ensureAuthenticated, (req, res) => {
+  /* istanbul ignore next */
+  const users = getAllUsers();
+  res.status(200).json({ results: users });
+});
+
 router.get("/search", ensureAuthenticated, validateMiddleware([searchValidation]), (req, res) => {
   const { q } = req.query;
 
