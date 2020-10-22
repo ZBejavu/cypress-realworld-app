@@ -48,9 +48,13 @@ naturalSlideHeight={150}
 totalSlides={news.length}
 visibleSlides={2}
 >
-<ButtonBack>Back</ButtonBack>
-<ButtonNext style={{float:'right'}}>Next</ButtonNext>
-<Slider>
+<ButtonBack style={{background:'transparent', border:'none'}}>
+<Button color='primary'>Back</Button>
+</ButtonBack>
+<ButtonNext style={{marginLeft:'700px', background:'transparent', border:'none'}}>
+<Button color='primary'>Next</Button>
+</ButtonNext>
+<Slider style={{background:'#f1f1f1'}}>
 {news && news.map(item =>{
 return (
 <Slide index={news.indexOf(item)}>
