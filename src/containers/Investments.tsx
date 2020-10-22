@@ -86,7 +86,7 @@ const HeadCells = [
 {id:'g', label:'Grwoth'}
 ]
 
-const handleRequestSort = (property: any) => () => { 
+const handleRequestSort = (property:any) => () => { 
 const isAsc = orderBy === property && order === 'asc';
 setOrder(isAsc ? 'desc' : 'asc');
 setOrderBy(property);    
@@ -149,9 +149,7 @@ function sortSymbols(array:symbols[], comparator:any) {
         return (
 <TableRow>
 <TableCell>
-<IconButton style={{fontSize:"14px"}} size="small" color="primary">B</IconButton>
-{" | "}
-<IconButton style={{fontSize:"14px"}} size="small" color="primary">S</IconButton>
+<Button style={{fontSize:"14px"}} size="small" color="primary">Trade</Button>
 </TableCell>
 <TableCell>{e.name}</TableCell>
 <TableCell>{e.ticker}</TableCell>
