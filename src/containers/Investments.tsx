@@ -156,8 +156,8 @@ function sortSymbols(array:symbols[], comparator:any) {
 <TableCell>{e.financeInfo.o}</TableCell>
 <TableCell>{e.financeInfo.c}</TableCell>
 <TableCell
-style={{color: e.financeInfo.c >= e.financeInfo.o ? 'green' : 'red'}}>
-<i className={e.financeInfo.c >= e.financeInfo.o ? 'fas fa-caret-up' : 'fas fa-caret-down'}/>
+style={{color: e.financeInfo.c > e.financeInfo.o ? 'green' : e.financeInfo.c < e.financeInfo.o ? 'red' : 'black'}}>
+<i className={e.financeInfo.c > e.financeInfo.o ? 'fas fa-caret-up' : e.financeInfo.c < e.financeInfo.o ? 'fas fa-caret-down' : ''}/>
 {" "}{e.financeInfo.g}
 </TableCell>
 </TableRow>
