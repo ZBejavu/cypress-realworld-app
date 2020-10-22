@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, IconButton } from "@material-ui/core";
 import { User } from "../models";
 import { Interpreter } from "xstate";
 import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
 import axios from 'axios'
-
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
@@ -21,9 +18,7 @@ export interface UserSettingsProps {
 const Investments: React.FC<UserSettingsProps> = ({authService}) => {
   const [symbolsTable, setSymbolsTable] = useState<symbols[]>([])
   const [order, setOrder] = useState<'asc'|'desc'>('asc');
-  const [orderBy, setOrderBy] = useState<'Name'|'Symbol'|'Open Price'|'Current Price'|'Grwoth'>('Name');
-  const [toggleState, setToggleState] = useState<boolean>(false)
-
+  const [orderBy, setOrderBy] = useState<'name'|'symbol'|'o'|'c'|'g'>('name');
 
   interface financeInfo {
     o: number, // Open price of the day
@@ -81,62 +76,48 @@ let initiaFinanceInfo =
   }, []);
 
 
-const HeadCells = ['Name', 'Symbol', 'Open Price', 'Current Price', 'Grwoth']
 
-  const handleRequestSort = (property: any) => () => { 
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-    setToggleState(!toggleState)
-  }
 
-useEffect(() => {
-// למה לעזאזל זה לא עובד
-console.log(order,orderBy) 
-const sortTable = () => {
-let sortedTable = symbolsTable.sort((a:symbols, b:symbols): number => {
-if(order === 'desc'){
-  switch(orderBy){
-  case 'Name':
- if (a.name.toUpperCase() < b.name.toUpperCase()){
-return -1;
- } else return 1;
- case 'Symbol':
- if (a.ticker.toUpperCase() < b.ticker.toUpperCase()){
-return -1;
- } else return 1;
- case 'Open Price':
- return b.financeInfo.o - a.financeInfo.o;
- case 'Current Price':
- return b.financeInfo.c - a.financeInfo.c;
-  case 'Grwoth':
- return b.financeInfo.g - a.financeInfo.g;
-default:
-  return 1;
+const HeadCells = [
+{id:'name', label: 'Name'},
+{id:'ticker', label: 'Symbol'},
+{id:'o', label: 'Open Price'},
+{id:'c', label: 'Current Price'},
+{id:'g', label:'Grwoth'}
+]
+
+const handleRequestSort = (property: any) => () => { 
+const isAsc = orderBy === property && order === 'asc';
+setOrder(isAsc ? 'desc' : 'asc');
+setOrderBy(property);    
+}
+
+
+function descendingComparator(a:any, b:any, orderBy:string) {
+  if (orderBy.length > 1 ? b[orderBy] < a[orderBy] : b['financeInfo'][orderBy] > a['financeInfo'][orderBy]) {
+    return -1;
   }
-} else {
-  switch(orderBy){
-  case 'Name':
- if (b.name.toUpperCase() < a.name.toUpperCase()){
-return -1;
- } else return 1;
- case 'Symbol':
- if (b.ticker.toUpperCase() < a.ticker.toUpperCase()){
-return -1;
- } else return 1;
- case 'Open Price':
- return a.financeInfo.o - b.financeInfo.o;
- case 'Current Price':
- return a.financeInfo.c - b.financeInfo.c;
-  case 'Grwoth':
- return a.financeInfo.g - b.financeInfo.g;
-default:
-  return 1;
-}}
-})
-setSymbolsTable(sortedTable)
-}; sortTable();
-}, [toggleState])
+  if (orderBy.length > 1 ? b[orderBy] > a[orderBy] : b['financeInfo'][orderBy] < a['financeInfo'][orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order:'asc'|'desc', orderBy:string) {
+  return order === 'desc'
+    ? (a:symbols, b:symbols) => descendingComparator(a, b, orderBy)
+    : (a:symbols, b:symbols) => -descendingComparator(a, b, orderBy);
+}
+
+function sortSymbols(array:symbols[], comparator:any) {
+  const sortedArray = array.map((el:any, index:any) => [el, index]);
+  sortedArray.sort((a:any, b:any) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return sortedArray.map((el:any) => el[0]);
+}
 
   return (
     <div>
@@ -145,32 +126,42 @@ setSymbolsTable(sortedTable)
           <Table>
         <TableHead>
           <TableRow>
+        <TableCell>Action</TableCell>
         {HeadCells.map(cell => {
         return (
         <TableCell
-        sortDirection={orderBy === cell ? order : false}
+        sortDirection={orderBy === cell.id ? order : false}
         >
         <TableSortLabel
-        active={orderBy === cell}
-        direction={orderBy === cell ? order : 'asc'}
-        onClick={handleRequestSort(cell)}
+        active={orderBy === cell.id}
+        direction={orderBy === cell.id ? order : 'asc'}
+        onClick={handleRequestSort(cell.id)}
         >
-        {cell}
+        {cell.label}
             </TableSortLabel>
         </TableCell>
         )})}
 
 
           </TableRow>
-        {symbolsTable.map(e => {
+        {sortSymbols(symbolsTable, getComparator(order, orderBy)).map(e => {
 
         return (
 <TableRow>
+<TableCell>
+<IconButton style={{fontSize:"14px"}} size="small" color="primary">B</IconButton>
+{" | "}
+<IconButton style={{fontSize:"14px"}} size="small" color="primary">S</IconButton>
+</TableCell>
 <TableCell>{e.name}</TableCell>
 <TableCell>{e.ticker}</TableCell>
 <TableCell>{e.financeInfo.o}</TableCell>
 <TableCell>{e.financeInfo.c}</TableCell>
-<TableCell>{e.financeInfo.g}</TableCell>
+<TableCell
+style={{color: e.financeInfo.c >= e.financeInfo.o ? 'green' : 'red'}}>
+<i className={e.financeInfo.c >= e.financeInfo.o ? 'fas fa-caret-up' : 'fas fa-caret-down'}/>
+{" "}{e.financeInfo.g}
+</TableCell>
 </TableRow>
         )
         
