@@ -89,7 +89,7 @@ export const mainListItems = (
       // @ts-ignore
       onClick={() => showTemporaryDrawer && toggleDrawer()}
       component={RouterLink}
-      to="/stockinvestments"  //todo: handle
+      to="/investments"  //todo: handle
       data-test="sidenav-stockinvestments" //todo: handle
     >
       <ListItemIcon>

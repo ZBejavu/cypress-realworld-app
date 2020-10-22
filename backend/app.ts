@@ -6,7 +6,6 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors";
 import paginate from "express-paginate";
-
 import auth from "./auth";
 import userRoutes from "./user-routes";
 import contactRoutes from "./contact-routes";
@@ -17,13 +16,38 @@ import commentRoutes from "./comment-routes";
 import notificationRoutes from "./notification-routes";
 import bankTransferRoutes from "./banktransfer-routes";
 import testDataRoutes from "./testdata-routes";
+import axios from 'axios'
+import ngrok from 'ngrok'
 
+const port = 3001
 require("dotenv").config();
+
+
+/*
+async function establishConnection(){
+  const url = await ngrok.connect(port); // [IP_ADDRESS]
+  process.env.MY_URL = url; 
+  console.log('MY_URL' ,process.env.MY_URL);
+}
+
+establishConnection(); 
+
+app.post("/investments", async (req, res) => {
+const webhookSecret = req.headers["X-Finnhub-Secret"]
+if (webhookSecret === process.env.webhook_SECRET){
+await axios.get('https://finnhub.io/api/v1/quote?symbol=AAPL&token=bu85pov48v6ufhqjaq7g')
+return res.status(200).json({ webhook: true })
+}
+return res.status(404).json({ webhook: false })
+  })
+
+  */
 
 const corsOption = {
   origin: "http://localhost:3000",
   credentials: true,
 };
+
 
 const app = express();
 
@@ -60,6 +84,7 @@ app.use("/likes", likeRoutes);
 app.use("/comments", commentRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/bankTransfers", bankTransferRoutes);
+// app.use("/invesments", invesmentsRoutes);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
@@ -68,4 +93,8 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.listen(3001);
+app.listen(port);
+
+
+
+

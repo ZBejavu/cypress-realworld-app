@@ -1,0 +1,2 @@
+GET https://finnhub.io/api/v1/quote?symbol=AAPL
+:""
