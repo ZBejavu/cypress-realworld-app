@@ -18,7 +18,7 @@
         data: [65, 59, 80, 81, 56], // array of values for Y axis (numbers)
       },
       {
-        label: 'data1',// name of the line (one or two words)
+        label: 'data2',// name of the line (one or two words)
         backgroundColor: 'green',//raw color
         borderColor: 'green',//use the same as background color
         fill: false, // change the line chart
