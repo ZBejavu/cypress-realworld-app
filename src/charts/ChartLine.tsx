@@ -1,9 +1,14 @@
-
 import React from 'react';
 import {Line} from 'react-chartjs-2';
+import { ChartData } from "./ChartsInterface";
+import { State } from "./ChartsInterface";
 
-function ChartLine({data}){
-    const state = {
+interface Props {
+  data: ChartData
+}
+
+const ChartLine: React.FC<Props> = ({ data }) => {
+    const state: State = {
         labels: data.labels ,
         datasets: data.rawData
       }
