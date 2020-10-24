@@ -32,17 +32,32 @@ const ManagerTab: React.FC<UserSettingsProps> = ({ authService }) => {
 
   const dataProperty = allTransactions!== undefined && allTransactions[0][0] !== 'initial' ? allTransactions.reverse().map((transactions:any) => transactions[1]) : [0];
   const labels = allTransactions!== undefined && allTransactions[0][0] !== 'initial' ? allTransactions.map((transactions:any) => transactions[0]) : ['label'];
+  const transactionAverage = allTransactions!== undefined && allTransactions[0][0] !== 'initial' ? allTransactions.map((transactions:any) => transactions[2]) : [0];
   const data : ChartData =  {
     labels: labels, // array of values for x axis (strings)
-    title: 'Transactions per Month', // title for the chart
+    title: 'Total Transaction Amount', // title for the chart
     rawData: [
       {
-        label: 'amount',// name of the line (one or two words)
+        label: 'Amount',// name of the line (one or two words)
         backgroundColor: 'blue',//raw color
         borderColor: 'blue',//use the same as background color
         fill: false, // change the line chart
         data: dataProperty // array of values for Y axis (numbers)
-      },
+      }
+        // you can add as many object as you wand, each one will a different line with different color
+    ]
+  }
+  const averageData : ChartData =  {
+    labels: labels, // array of values for x axis (strings)
+    title: 'Average amount per transaction', // title for the chart
+    rawData: [
+      {
+        label: 'Average',// name of the line (one or two words)
+        backgroundColor: 'red',//raw color
+        borderColor: 'red',//use the same as background color
+        fill: false, // change the line chart
+        data: transactionAverage // array of values for Y axis (numbers)
+      }
         // you can add as many object as you wand, each one will a different line with different color
     ]
   }
@@ -53,8 +68,10 @@ const ManagerTab: React.FC<UserSettingsProps> = ({ authService }) => {
       {allUsers.map((user, i) => {
         return <div key={i}>{user.username}</div>;
       })}
-
+    <div style={{display:'flex'}}>
       <Charts chartTypes={[0,1]} data = {data}/>
+      <Charts chartTypes={[0,1]} data = {averageData}/>
+    </div>
     </div>
   );
 };
