@@ -24,6 +24,8 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   >("companyName");
   const [companyToCompare, setCompanyToCompare] = useState<string[]>([]);
 
+let match = useRouteMatch();
+
   console.log("CompanyToCompare", companyToCompare);
 
   /* Represents the information we want to display in the table below */
@@ -31,6 +33,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
     symbol: string;
     companyName: string;
     iexRealtimePrice: number;
+    latestPrice: number;
     previousClose: number;
     growth: number;
   }
@@ -40,14 +43,14 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const fetchData = async () => {
     let dataTable: FinanceData[] = [];
     const { data } = await axios.get(
-      `https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_d9db58af65374520ace4898a24532312&symbols=TSLA,MCD,AMZN,FB,AAPL,UAL,INTC,Pins,NFLX,RCL`
+    `http://localhost:3001/investments/stocks`
     );
     /* data gets us the "quote" object requested from the api. "...batch?types=quote..." */
-    for (const [key, value] of Object.entries<any>(data)) {
+    for (const [key, value] of Object.entries<any>(data.stocks)) {
       /* Destructuring the actual information from the api and updating the table */
-      let { symbol, companyName, iexRealtimePrice, previousClose }: FinanceData = value.quote;
-      let growth: number = Number((iexRealtimePrice / previousClose).toFixed(3));
-      dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth });
+      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice }: FinanceData = value.quote;
+      let growth: number = Number((iexRealtimePrice ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
+      dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice });
     }
     setFinanceDataTable(dataTable);
   };
@@ -145,7 +148,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
               return (
                 <TableRow style={{ background: "white" }}>
                   <TableCell>
-                    <RouterLink>
+                    <RouterLink to={`${match.url}/${e.symbol}`}>
                     <Button style={{ fontSize: "14px" }} size="small" color="primary">
                       Trade
                     </Button>
@@ -154,27 +157,27 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
                   <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.symbol}</TableCell>
                   <TableCell>{e.previousClose}</TableCell>
-                  <TableCell>{e.iexRealtimePrice}</TableCell>
+                  <TableCell>{e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice + ' - Closed'}</TableCell>
                   <TableCell
                     style={{
                       color:
-                        e.iexRealtimePrice > e.previousClose
+                        e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice > e.previousClose
                           ? "green"
-                          : e.iexRealtimePrice < e.previousClose
+                          : e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice < e.previousClose
                           ? "red"
                           : "black",
                     }}
                   >
                     <i
                       className={
-                        e.iexRealtimePrice > e.previousClose
+                        e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice > e.previousClose
                           ? "fas fa-caret-up"
-                          : e.iexRealtimePrice < e.previousClose
+                          : e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice < e.previousClose
                           ? "fas fa-caret-down"
                           : ""
                       }
                     />{" "}
-                    {e.growth}
+                    {e.growth}%
                   </TableCell>
                 </TableRow>
               );

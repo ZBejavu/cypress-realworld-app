@@ -25,33 +25,38 @@ const InvestmentSymbol: React.FC<UserSettingsProps> = ({ authService }) => {
 
   
 let { symbolId }: any = useParams()
+
 useEffect(() => {
   const fetchData = async () => {
     const { data } = await axios.get(
-      `https://cloud.iexapis.com/stable/stock/${symbolId}/batch?types=quote,news,chart&token=pk_d9db58af65374520ace4898a24532312`
+      `http://localhost:3001/investments/stocks/${symbolId}`
     );
     console.log(data)
 
-      setCharts(data.chart);
-      setNews(data.news);
-      setQuote(data.quote);
+      setCharts(data.stock.chart);
+      setNews(data.stock.news);
+      setQuote(data.stock.quote);
     };
     fetchData();
 }, [])
 
 
   return (
- <div>
+ <div style={{marginLeft:'-100px', width:'1100px'}}>
+<SymbolChart authService={authService} chartData={charts}/>
 <CarouselProvider
 naturalSlideWidth={100}
-naturalSlideHeight={150}
+naturalSlideHeight={105}
+step={3}
+isPlaying={true}
+interval={10000}
 totalSlides={news.length}
-visibleSlides={2}
+visibleSlides={3}
 >
 <ButtonBack style={{background:'transparent', border:'none'}}>
 <Button color='primary'>Back</Button>
 </ButtonBack>
-<ButtonNext style={{marginLeft:'700px', background:'transparent', border:'none'}}>
+<ButtonNext style={{float:'right', background:'transparent', border:'none'}}>
 <Button color='primary'>Next</Button>
 </ButtonNext>
 <Slider style={{background:'#f1f1f1'}}>
@@ -64,7 +69,6 @@ return (
 })}
 </Slider>
 </CarouselProvider>
-<SymbolChart authService={authService} chartData={charts}/>
  </div>
   );
 };
