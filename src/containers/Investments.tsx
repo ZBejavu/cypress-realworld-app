@@ -22,7 +22,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const [orderBy, setOrderBy] = useState<
     "symbol" | "companyName" | "iexRealtimePrice" | "previousClose" | "growth"
   >("companyName");
-  const [companyToCompare, setCompanyToCompare] = useState<string[]>([]);
+  const [companyToCompare, setCompanyToCompare] = useState<FinanceData[]>([]);
 
 let match = useRouteMatch();
 
@@ -109,15 +109,15 @@ let match = useRouteMatch();
       <h1>Welcome to the Stock Investment Page</h1>
       <select
         multiple
-        value={companyToCompare}
+        // value={'select companies'}
       >
-        {HeadCells.map((object) => (
+        {financeDataTable.map((object) => (
           <option
-            key={object.id}
-            value={object.label}
-            onClick={(e) => setCompanyToCompare([...companyToCompare, object.label])}
+            key={object.companyName}
+            value={object.companyName}
+            onClick={() => setCompanyToCompare([...companyToCompare, object])}
           >
-            {object.label}
+            {object.companyName}
           </option>
           // <MenuItem key={company.symbol} value={company.companyName}>
           //   {company.companyName}
