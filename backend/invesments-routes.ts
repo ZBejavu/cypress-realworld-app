@@ -67,6 +67,26 @@ const { symbol } = req.params
   res.json({ stock });
 });
 
+router.get("/stocks/:symbol", (req, res) => {
+const { symbol } = req.params
+  const stock = getOneStock(symbol.toUpperCase());
+  res.status(200);
+  res.json({ stock });
+});
 
+/*
+
+router.get("/stocks/webhook", (req, res) => {
+const event = req.body
+const { data } = req.body
+const { iexRealtimePrice, previousClose, latestPrice } = data
+  const stock = getOneStock(event);
+  // not a real function ---  stock.quote.update({ iexRealtimePrice, previousClose, latestPrice })
+  res.status(200);
+  res.json({ stock });
+});
+
+
+*/
 
 export default router;
