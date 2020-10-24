@@ -1,3 +1,6 @@
+import express from "express";
+const router = express.Router();
+
 /*
 
 const Request = require('request-promise-native');
@@ -33,3 +36,5 @@ function connect() {
 connect();
 
 */
+
+export default router;

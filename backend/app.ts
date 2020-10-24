@@ -17,6 +17,7 @@ import notificationRoutes from "./notification-routes";
 import bankTransferRoutes from "./banktransfer-routes";
 import testDataRoutes from "./testdata-routes";
 import investmentsRoutes from "./invesments-routes";
+import managerRoutes from "./manager";
 import axios from 'axios'
 import ngrok from 'ngrok'
 
@@ -81,6 +82,7 @@ app.use("/users", userRoutes);
 app.use("/contacts", contactRoutes);
 app.use("/bankAccounts", bankAccountRoutes);
 app.use("/transactions", transactionRoutes);
+app.use("/manager", managerRoutes);
 app.use("/likes", likeRoutes);
 app.use("/comments", commentRoutes);
 app.use("/notifications", notificationRoutes);
