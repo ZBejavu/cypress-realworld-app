@@ -58,14 +58,14 @@ router.get("/allYearsTransactions", ensureAuthenticated, (req, res) => {
     }
     const sumOfTransactionsPerMonth = transactionsMonthArr.map((transactions,i) => {
         if(transactions.length === 0){
-            return [orderedMonths[i], 0];
+            return [orderedMonths[i], 0, 0];
         }else{
             let sum = 0;
             transactions.forEach(transaction =>{
                 sum+= transaction.amount;
             })
 
-            return [orderedMonths[i], sum];
+            return [orderedMonths[i], sum, sum/transactions.length];
         }
     })
 
