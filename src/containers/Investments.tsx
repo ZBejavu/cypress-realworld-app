@@ -7,6 +7,7 @@ import axios from "axios";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
@@ -23,6 +24,8 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
     "symbol" | "companyName" | "iexRealtimePrice" | "previousClose" | "growth"
   >("companyName");
   const [companyToCompare, setCompanyToCompare] = useState<FinanceData[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
 let match = useRouteMatch();
 
@@ -104,6 +107,16 @@ let match = useRouteMatch();
     return sortedArray.map((el: any) => el[0]);
   }
 
+  const handleChangePage = (event: any, newPage: number) => {
+    setPage(newPage);
+  };
+
+    const handleChangeRowsPerPage = (event: any) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+
   return (
     <div>
       <h1>Welcome to the Stock Investment Page</h1>
@@ -144,7 +157,9 @@ let match = useRouteMatch();
                 );
               })}
             </TableRow>
-            {sortFinanceData(financeDataTable, getComparator(order, orderBy)).map((e) => {
+            {sortFinanceData(financeDataTable, getComparator(order, orderBy))
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((e) => {
               return (
                 <TableRow style={{ background: "white" }}>
                   <TableCell>
@@ -184,6 +199,15 @@ let match = useRouteMatch();
             })}
           </TableHead>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          component="div"
+          count={financeDataTable.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );
