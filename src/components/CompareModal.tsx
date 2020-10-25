@@ -13,15 +13,15 @@ interface FinanceDataChart {
 interface Props {
     companyToCompare: FinanceDataChart[];
     openModal: boolean;
-
+    setOpenModal: (x: boolean) => void;
 }
 
 let colors: string[] = ['red', 'blue', 'green', 'yellow', 'pink', 'brown', 'orange', 'violet', 'maroon', 'cyan'];
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: 800,
         flexGrow: 1,
+        minHeight: 800,
         minWidth: 800,
         transform: 'translateZ(0)',
         // The position fixed scoping doesn't work in IE 11.
@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     paper: {
-        width: '80vw',
+        width: '50vw',
+        height: '55vh',
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -45,8 +46,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CompareModal: React.FC<Props> = ({ companyToCompare, openModal }) => {
+const CompareModal: React.FC<Props> = ({ companyToCompare, openModal, setOpenModal }) => {
     const classes = useStyles();
+
+    const handleClose = () => setOpenModal(false);
 
     const rawData = companyToCompare.map((company, i) => {
         return (
@@ -64,18 +67,18 @@ const CompareModal: React.FC<Props> = ({ companyToCompare, openModal }) => {
 
     const data = {
         labels: dates, // array of values for x axis (strings)
-        title: 'Stocks Comparison', // title for the chart
+        title: 'Stocks Comparison - Close Prices', // title for the chart
         rawData: rawData
     }
 
     return (
         <div>
             <Modal
-                // disablePortal
-                // disableEnforceFocus
-                // disableAutoFocus
+                disablePortal
+                disableEnforceFocus
+                disableAutoFocus
                 open={openModal}
-                // onClose = {handleClose}
+                onClose = {handleClose}
                 aria-labelledby="server-modal-title"
                 aria-describedby="server-modal-description"
                 className={classes.modal}

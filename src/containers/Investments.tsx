@@ -225,7 +225,7 @@ let match = useRouteMatch();
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <CompareModal companyToCompare={companyToCompare} openModal={openModal} />
+      <CompareModal companyToCompare={companyToCompare} openModal={openModal} setOpenModal={setOpenModal} />
     </div>
   );
 };
