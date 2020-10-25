@@ -122,7 +122,6 @@ let match = useRouteMatch();
       <h1>Welcome to the Stock Investment Page</h1>
       <select
         multiple
-        // value={'select companies'}
       >
         {financeDataTable.map((object) => (
           <option
@@ -132,9 +131,6 @@ let match = useRouteMatch();
           >
             {object.companyName}
           </option>
-          // <MenuItem key={company.symbol} value={company.companyName}>
-          //   {company.companyName}
-          // </MenuItem>
         ))}
       </select>
       <button>Compare</button>
@@ -169,8 +165,8 @@ let match = useRouteMatch();
                     </Button>
                     </RouterLink>
                   </TableCell>
-                  <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.symbol}</TableCell>
+                  <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.previousClose}</TableCell>
                   <TableCell>{e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice + ' - Closed'}</TableCell>
                   <TableCell
