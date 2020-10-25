@@ -30,6 +30,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [search, SetSearch] = useState<string>('');
 
 let match = useRouteMatch();
 
@@ -140,6 +141,12 @@ let match = useRouteMatch();
   return (
     <div>
       <h1>Welcome to the Stock Investment Page</h1>
+            <input onChange={(event) => SetSearch(event.target.value)} placeholder="search symbol"/>
+      <RouterLink to={`${match.url}/${search}`}>
+         <button>
+            Search
+         </button>
+      </RouterLink>
       <select
         multiple
       >
