@@ -101,10 +101,10 @@ try{
 
 router.delete("/invest/:symbol/:userId", (req, res) => {
   const { symbol, userId } = req.params;
-  const investment = db.get(INVESTMENTS).find({ symbol, userId }).value();
+  const { balance } = req.headers;
   db.get(INVESTMENTS).remove({ symbol, userId }).write();
-  // add to balance
-  return res.status(200).json({amount: investment.amount / investment.bidPrice});
+  updateUserById(userId, {balance: Number(balance)})
+  return res.status(200).json({deleted: true});
 });
 
 
@@ -119,12 +119,6 @@ router.patch("/invest/:symbol/:userId", (req, res) => {
   .write();
   updateUserById(userId, { balance })
   return res.status(200).json({ updated: true });
-});
-
-router.patch("/updateBalance/:userId", (req, res) => {
-  const { userId } = req.params;
-  const { balance } = req.body;
-  updateUserById(userId, { balance })
 });
 
 // async function getChartData(){

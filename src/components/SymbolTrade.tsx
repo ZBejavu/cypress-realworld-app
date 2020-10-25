@@ -32,7 +32,6 @@ latestSource:string;
 latestTime:string;
 latestUpdate:number;
 latestVolume:number;
-iexRealtimePrice:null;
 iexRealtimeSize:null;
 iexLastUpdated:null;
 delayedPrice:number;
@@ -88,50 +87,72 @@ useEffect(() => {
 
 
 const buyStock = async (amount: number) => {
-if(quote.iexRealtimePrice) {
+if (currentUser?.balance as number < amount) return alert('You don\'t have the selected amount in your account!')
 await axios.post(
       `http://localhost:3001/investments/invest/${quote.symbol}/${currentUser?.id}`, {
-  bidPrice: quote.iexRealtimePrice,
+  bidPrice: quote.latestPrice,
   amount: amount,
   balance: currentUser?.balance as number - amount
       }
     );
-    }
 }
 
-const sellStock = async () => {
-if(quote.iexRealtimePrice) {
-const { data } = await axios.delete(
-      `http://localhost:3001/investments/invest/${quote.symbol}/${currentUser?.id}`
-    )
-let currentAmount = data.amount * (quote.iexRealtimePrice as unknown as number)
+const sellStock = async (investment: Investment) => {
+let currentAmount = (investment.amount / investment.bidPrice) * (quote.latestPrice as unknown as number)
 let currentBalance = currentUser?.balance as number + currentAmount
-await axios.patch(
-      `http://localhost:3001/investments/invest/${currentBalance}/${currentUser?.id}`
-    )
-}
+await axios.delete(`http://localhost:3001/investments/invest/${quote.symbol}/${currentUser?.id}`, {
+  headers: {
+    balance: currentBalance
+  }
+})
 }
 
 const updateStock = async (investment: Investment, amount: number) => {
-let updatedAmount = amount + ((investment.amount / investment.bidPrice) * (quote.iexRealtimePrice as unknown as number));
-if(quote.iexRealtimePrice) {
+if (currentUser?.balance as number < amount) return alert('You don\'t have the selected amount in your account!')
+let updatedAmount = amount + ((investment.amount / investment.bidPrice) * (quote.latestPrice as unknown as number));
 await axios.patch(
       `http://localhost:3001/investments/invest/${quote.symbol}/${currentUser?.id}`, {
-  bidPrice: quote.iexRealtimePrice,
+  bidPrice: quote.latestPrice,
   amount: updatedAmount,
   balance: currentUser?.balance as number - amount
       }
     );
 }
-}
 
       return (
+<div>
+{investment && 
+<>
+<h2>Your Investment:</h2>
+<p>Amount: {investment.amount}</p>
+<p>Initial bid price: {investment.bidPrice}</p>
+<p>Current bid's value: {((investment.amount / investment.bidPrice) * quote.latestPrice).toFixed(3)}</p>
+<p>Earnings: 
+<span style={{
+                       color:
+                          investment.bidPrice < quote.latestPrice
+                          ? "green"
+                          : investment.bidPrice > quote.latestPrice
+                          ? "red"
+                          : "black",
+                    }}>
+{(investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount > 0 ? 
++ ((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3) :
+((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3)
+}
+</span>
+</p>
+</>
+}
+
 <form>
 <input onChange={(event) => setAmount(Number(event.target.value))} placeholder="search symbol"/>
-<button onClick={() => buyStock(amount)}>Buy</button>
-<button onClick={() => sellStock()}>Sell</button>
-<button onClick={() => updateStock(investment as Investment, amount)}>Update</button>
+{!investment && <button onClick={() => buyStock(amount)}>Buy</button>}
+{investment && <button onClick={() => sellStock(investment as Investment)}>Sell</button>}
+{investment && <button onClick={() => updateStock(investment as Investment, amount)}>Update</button>}
 </form>
+
+</div>
     )
 }
 

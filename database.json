@@ -23,7 +23,7 @@
       "lastName": "asdf",
       "username": "zach",
       "password": "$2a$10$ie6yIJjzG/V9SM3XyfEuHe6q.RtfUgQSsSjPTZ2T5uuWKhi8sMJ2a",
-      "balance": 5000000,
+      "balance": 499000,
       "createdAt": "2020-10-21T11:02:50.568Z",
       "modifiedAt": "2020-10-21T11:02:50.568Z",
       "privileges":  ["manager","business"]

@@ -3241,7 +3241,7 @@
         "low": 36.52,
         "lowTime": 1603461202405,
         "lowSource": "15 minute delayed price",
-        "latestPrice": 38.01,
+        "latestPrice": 35.01,
         "latestSource": "Close",
         "latestTime": "October 23, 2020",
         "latestUpdate": 1603483200327,
@@ -6567,13 +6567,13 @@
   ],
   "investments": [
     {
-      "id": "6SfgGA25A",
-      "uuid": "a8f5b111-e49a-4965-8c7a-2a50cee914d2",
+      "id": "sRxpgbvnG",
+      "uuid": "252f951d-df63-4dc4-a437-e06f81f8cec9",
       "userId": "TfJK_4UnN",
       "symbol": "UAL",
-      "bidPrice": 1.15,
-      "date": 1603642706095,
-      "amount": 1000
+      "bidPrice": 35.01,
+      "date": 1603649667933,
+      "amount": 3000
     }
   ]
 }

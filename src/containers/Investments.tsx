@@ -40,7 +40,6 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   interface FinanceData {
     symbol: string;
     companyName: string;
-    iexRealtimePrice: number;
     latestPrice: number;
     previousClose: number;
     growth: number;
@@ -65,9 +64,9 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
     /* data gets us the "quote" object requested from the api. "...batch?types=quote..." */
     for (let stock of data) {
       /* Destructuring the actual information from the api and updating the table */
-      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice, isUSMarketOpen }: FinanceData = stock.quote;
-      let growth: number = Number((isUSMarketOpen ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
-      dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice, isUSMarketOpen });
+      let { symbol, companyName, previousClose, latestPrice, isUSMarketOpen }: FinanceData = stock.quote;
+      let growth: number = Number((latestPrice / previousClose * 100 - 100).toFixed(3));
+      dataTable.push({ symbol, companyName, previousClose, growth, latestPrice, isUSMarketOpen });
     }
     for (let stock of data) {
       let object : FinanceDataChart = {
@@ -182,22 +181,22 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
                   <TableCell>{e.symbol}</TableCell>
                   <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.previousClose}</TableCell>
-                  <TableCell>{e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice + ' - Closed'}</TableCell>
+                  <TableCell>{e.isUSMarketOpen ? e.latestPrice : e.latestPrice + ' - Closed'}</TableCell>
                   <TableCell
                     style={{
                       color:
-                        e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice > e.previousClose
+                        e.latestPrice > e.previousClose
                           ? "green"
-                          : e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice < e.previousClose
+                          : e.latestPrice < e.previousClose
                           ? "red"
                           : "black",
                     }}
                   >
                     <i
                       className={
-                        e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice > e.previousClose
+                        e.latestPrice > e.previousClose
                           ? "fas fa-caret-up"
-                          : e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice < e.previousClose
+                          : e.latestPrice < e.previousClose
                           ? "fas fa-caret-down"
                           : ""
                       }
