@@ -148,20 +148,6 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
             Search
          </button>
       </RouterLink>
-      <select
-        multiple
-      >
-        {companyLastMonthStock.map((object) => (
-          <option
-            key={object.name}
-            value={object.name}
-            onClick={() => setCompanyToCompare([...companyToCompare, object])}
-          >
-            {object.name}
-          </option>
-        ))}
-      </select>
-      <button onClick={()=>setOpenModal(true)}>Compare</button>
       <TableContainer>
         <Table size="small" style={{ border: "1px solid #DDDDDD" }}>
           <TableHead>
@@ -233,7 +219,34 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <CompareModal companyToCompare={companyToCompare} setCompanyToCompare={setCompanyToCompare} openModal={openModal} setOpenModal={setOpenModal} />
+      <h2>Compare last month companies stocks</h2>
+      <select
+        multiple
+        size = {10}
+      >
+        {companyLastMonthStock.map((object) => (
+          <option
+            key={object.name}
+            value={object.name}
+            onClick={() => setCompanyToCompare([...companyToCompare, object])}
+          >
+            {object.name}
+          </option>
+        ))}
+      </select>
+      {
+        companyToCompare[0] && companyToCompare.map(company=>{
+          return(
+          <label> {`${company.name} `} </label>
+          )
+        })
+      }
+      {
+        companyToCompare[0] && <button onClick={()=>setOpenModal(true)}>Compare</button>
+      }
+      {
+        companyToCompare[0] && <CompareModal companyToCompare={companyToCompare} setCompanyToCompare={setCompanyToCompare} openModal={openModal} setOpenModal={setOpenModal} />
+      }
     </div>
   );
 };
