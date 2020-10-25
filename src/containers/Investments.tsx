@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, IconButton, MenuItem, Select } from "@material-ui/core";
+import { Button, Grid, IconButton, MenuItem, Select, Switch } from "@material-ui/core";
 import { User } from "../models";
 import { Interpreter } from "xstate";
 import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
@@ -13,6 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { Link as RouterLink, useRouteMatch, Route } from "react-router-dom";
 import CompareModal from '../components/CompareModal';
+import { CheckBox } from "@material-ui/icons";
 
 
 export interface UserSettingsProps {
@@ -44,6 +45,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
     previousClose: number;
     growth: number;
     isUSMarketOpen: boolean;
+    checked :boolean;
   }
 
   interface FinanceDataChart {
@@ -66,7 +68,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
       /* Destructuring the actual information from the api and updating the table */
       let { symbol, companyName, previousClose, latestPrice, isUSMarketOpen }: FinanceData = stock.quote;
       let growth: number = Number((latestPrice / previousClose * 100 - 100).toFixed(3));
-      dataTable.push({ symbol, companyName, previousClose, growth, latestPrice, isUSMarketOpen });
+      dataTable.push({ symbol, companyName, previousClose, growth, latestPrice, isUSMarketOpen, checked:false });
     }
     for (let stock of data) {
       let object : FinanceDataChart = {
@@ -165,10 +167,19 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
                   </TableCell>
                 );
               })}
+              <TableCell 
+              style={{backgroundColor: companyToCompare.length>0 ? 'red' : 'transparent'}}
+              onClick ={() => {
+                if(companyToCompare.length===0){
+                  return;
+                }
+                setOpenModal(true);
+              }}
+              >Compare</TableCell>
             </TableRow>
             {sortFinanceData(financeDataTable, getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((e) => {
+            .map((e, index) => {
               return (
                 <TableRow style={{ background: "white" }}>
                   <TableCell>
@@ -203,6 +214,31 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
                     />{" "}
                     {e.growth}%
                   </TableCell>
+                  <TableCell>
+                    <Switch
+                      checked={e.checked}
+                      onChange={()=> {
+                        let dataTableAfterCheck = financeDataTable.slice();
+                        let isChecked = e.checked;
+                        const indexToChange = dataTableAfterCheck.findIndex(data => data.symbol === e.symbol);
+                        if(!isChecked){
+                          console.log(companyLastMonthStock, e.name);
+                          const companyToAddToCompare = companyLastMonthStock.find(company => company.name === e.companyName);
+                          dataTableAfterCheck[indexToChange].checked = true;
+                          setCompanyToCompare([...companyToCompare, companyToAddToCompare!]);  
+                        }else{
+                          let companyToCompareAfterCheck = companyToCompare.slice();
+                          const companyIndexToChange = companyToCompare.findIndex(data => data.name === e.companyName);
+                          companyToCompareAfterCheck.splice(companyIndexToChange,1);
+                          setCompanyToCompare(companyToCompareAfterCheck);
+                          dataTableAfterCheck[indexToChange].checked = false;
+                        }
+                        setFinanceDataTable(dataTableAfterCheck);
+                      }}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -218,8 +254,23 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <h2>Compare last month companies stocks</h2>
-      <select
+      {openModal && 
+          <CompareModal 
+          companyToCompare={companyToCompare} 
+          setCompanyToCompare={setCompanyToCompare} 
+          openModal={openModal} 
+          setOpenModal={setOpenModal}
+          financeDataTable={financeDataTable}
+          setFinanceDataTable={setFinanceDataTable}
+           />
+      }
+      {/* {companyToCompare[0] && 
+        <div>
+          <h2>Compare last month companies stocks</h2>
+          <CompareModal companyToCompare={companyToCompare} setCompanyToCompare={setCompanyToCompare} openModal={openModal} setOpenModal={setOpenModal} />
+        </div>
+      } */}
+      {/* <select
         multiple
         size = {10}
       >
@@ -242,10 +293,7 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
       }
       {
         companyToCompare[0] && <button onClick={()=>setOpenModal(true)}>Compare</button>
-      }
-      {
-        companyToCompare[0] && <CompareModal companyToCompare={companyToCompare} setCompanyToCompare={setCompanyToCompare} openModal={openModal} setOpenModal={setOpenModal} />
-      }
+      } */}
     </div>
   );
 };

@@ -2,20 +2,30 @@ import React from 'react';
 import Charts from '../charts/Charts';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-
 interface FinanceDataChart {
     name: string;
     chart: any[]
 }
+interface FinanceData {
+    symbol: string;
+    companyName: string;
+    latestPrice: number;
+    previousClose: number;
+    growth: number;
+    isUSMarketOpen: boolean;
+    checked :boolean;
+  }
 
 interface Props {
     companyToCompare: FinanceDataChart[];
     openModal: boolean;
     setOpenModal: (x: boolean) => void;
     setCompanyToCompare: (x: FinanceDataChart[]) => void;
+    financeDataTable: FinanceData[];
+    setFinanceDataTable:(x: FinanceData[]) => void
 }
 
-let colors: string[] = ['red', 'blue', 'green', 'yellow', 'pink', 'brown', 'orange', 'violet', 'maroon', 'cyan'];
+let colors: string[] = ['red', 'blue', 'green', 'yellow', 'pink', 'brown', 'orange', 'violet', 'maroon', 'cyan','purple','black'];
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     paper: {
-        width: '50vw',
+        width: '45vw',
         height: '55vh',
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
@@ -45,12 +55,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CompareModal: React.FC<Props> = ({ companyToCompare, setCompanyToCompare, openModal, setOpenModal }) => {
+const CompareModal: React.FC<Props> = ({ companyToCompare, setCompanyToCompare, openModal, setOpenModal, financeDataTable, setFinanceDataTable }) => {
     const classes = useStyles();
 
     const handleClose = () => {
         setOpenModal(false);
+        let copyOfFinanceData = financeDataTable.slice();
+        copyOfFinanceData.forEach(data => {
+            if(data.checked){
+                data.checked = false;
+            }
+        })
         setCompanyToCompare([]);
+        setFinanceDataTable(copyOfFinanceData);
     }
 
     const rawData = companyToCompare.map((company, i) => {
@@ -74,6 +91,10 @@ const CompareModal: React.FC<Props> = ({ companyToCompare, setCompanyToCompare, 
     }
 
     return (
+
+        // <div className={classes.paper}>
+        // <Charts chartTypes={[0,1]} data={data} />
+        // </div>
         <div>
             <Modal
                 disablePortal
@@ -84,7 +105,7 @@ const CompareModal: React.FC<Props> = ({ companyToCompare, setCompanyToCompare, 
                 aria-labelledby="server-modal-title"
                 aria-describedby="server-modal-description"
                 className={classes.modal}
-            >
+            > 
                 <div className={classes.paper}>
                     <Charts chartTypes={[0,1]} data={data} />
                 </div>
