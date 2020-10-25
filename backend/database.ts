@@ -86,6 +86,7 @@ const LIKE_TABLE = "likes";
 const COMMENT_TABLE = "comments";
 const NOTIFICATION_TABLE = "notifications";
 const BANK_TRANSFER_TABLE = "banktransfers";
+const INVESTMENTS_TABLE = "investments";
 
 const databaseFile = path.join(__dirname, "../data/database.json");
 const adapter = new FileSync<DbSchema>(databaseFile);
@@ -208,6 +209,8 @@ export const updateUserById = (userId: string, edits: Partial<User>) => {
 
   db.get(USER_TABLE).find(user).assign(edits).write();
 };
+
+
 
 // Contact
 export const getContactBy = (key: string, value: any) => getBy(CONTACT_TABLE, key, value);
@@ -363,6 +366,7 @@ export const formatTransactionForApiResponse = (
     ...transaction,
   };
 };
+
 
 export const formatTransactionsForApiResponse = (
   transactions: Transaction[]

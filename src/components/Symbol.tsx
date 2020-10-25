@@ -13,6 +13,8 @@ import SymbolArticle from './SymbolArticle'
 import SymbolChart from './SymbolChart'
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
+import SymbolTrade from "./SymbolTrade";
+import { Quote } from "models/stockmarket";
 
 export interface UserSettingsProps {
   authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>
@@ -21,9 +23,8 @@ export interface UserSettingsProps {
 const InvestmentSymbol: React.FC<UserSettingsProps> = ({ authService }) => {
   const [charts, setCharts] = useState([]);
   const [news, setNews] = useState([]);
-  const [quote, setQuote] = useState();
+  const [quote, setQuote] = useState<any>();
 
-  
 let { symbolId }: any = useParams()
 
 useEffect(() => {
@@ -38,9 +39,9 @@ useEffect(() => {
     fetchData();
 }, [])
 
-
   return (
  <div style={{marginLeft:'-100px', width:'1100px'}}>
+<SymbolTrade authService={authService} quote={quote as Quote}/>
 <SymbolChart authService={authService} chartData={charts}/>
 <CarouselProvider
 naturalSlideWidth={100}

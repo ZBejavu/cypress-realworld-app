@@ -6564,5 +6564,16 @@
         }
       ]
     }
+  ],
+  "investments": [
+    {
+      "id": "6SfgGA25A",
+      "uuid": "a8f5b111-e49a-4965-8c7a-2a50cee914d2",
+      "userId": "TfJK_4UnN",
+      "symbol": "UAL",
+      "bidPrice": 1.15,
+      "date": 1603642706095,
+      "amount": 1000
+    }
   ]
 }

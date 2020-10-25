@@ -7,6 +7,7 @@ import { BankTransfer } from "./banktransfer";
 import { NotificationType } from "./notification";
 import { Comment } from "./comment";
 import { Stock } from "./stockmarket";
+import { Investment } from "./investment";
 
 export interface DbSchema {
   users: User[];
@@ -21,5 +22,6 @@ export interface DbSchema {
 
 
 export interface SmSchema {
-stocks: Stock[]
+  stocks: Stock[];
+  investments: Investment[];
 }

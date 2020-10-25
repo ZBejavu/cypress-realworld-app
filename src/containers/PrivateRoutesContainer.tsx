@@ -7,7 +7,6 @@ import TransactionsContainer from "./TransactionsContainer";
 import UserSettingsContainer from "./UserSettingsContainer";
 import NotificationsContainer from "./NotificationsContainer";
 import Investments from "./Investments";
-import investmentSymbol from '../components/InvestmentSymbol'
 import ManagerTab from "./ManagerTab";
 import BankAccountsContainer from "./BankAccountsContainer";
 import TransactionCreateContainer from "./TransactionCreateContainer";
@@ -17,7 +16,7 @@ import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
 import { SnackbarContext, SnackbarSchema, SnackbarEvents } from "../machines/snackbarMachine";
 import { useService } from "@xstate/react";
 import UserOnboardingContainer from "./UserOnboardingContainer";
-import InvestmentSymbol from "../components/InvestmentSymbol";
+import Symbol from "../components/Symbol";
 
 export interface Props {
   isLoggedIn: boolean;
@@ -57,7 +56,7 @@ const PrivateRoutesContainer: React.FC<Props> = ({
           <Investments authService={authService} />
         </PrivateRoute>
            <PrivateRoute isLoggedIn={isLoggedIn} exact path="/investments/:symbolId">
-          <InvestmentSymbol authService={authService} />
+          <Symbol authService={authService} />
         </PrivateRoute>
         <PrivateRoute isLoggedIn={isLoggedIn} exact path="/managertab">
           <ManagerTab authService={authService} />

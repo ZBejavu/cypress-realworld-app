@@ -29,10 +29,10 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const [companyToCompare, setCompanyToCompare] = useState<FinanceDataChart[]>([]);
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [search, SetSearch] = useState<string>('');
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
-let match = useRouteMatch();
+  let match = useRouteMatch();
 
   console.log("CompanyToCompare", companyToCompare);
 
@@ -44,6 +44,7 @@ let match = useRouteMatch();
     latestPrice: number;
     previousClose: number;
     growth: number;
+    isUSMarketOpen: boolean;
   }
 
   interface FinanceDataChart {
@@ -64,9 +65,9 @@ let match = useRouteMatch();
     /* data gets us the "quote" object requested from the api. "...batch?types=quote..." */
     for (let stock of data) {
       /* Destructuring the actual information from the api and updating the table */
-      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice }: FinanceData = stock.quote;
-      let growth: number = Number((iexRealtimePrice ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
-      dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice });
+      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice, isUSMarketOpen }: FinanceData = stock.quote;
+      let growth: number = Number((isUSMarketOpen ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
+      dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice, isUSMarketOpen });
     }
     for (let stock of data) {
       let object : FinanceDataChart = {
@@ -141,7 +142,7 @@ let match = useRouteMatch();
   return (
     <div>
       <h1>Welcome to the Stock Investment Page</h1>
-            <input onChange={(event) => SetSearch(event.target.value)} placeholder="search symbol"/>
+      <input onChange={(event) => SetSearch(event.target.value)} placeholder="search symbol"/>
       <RouterLink to={`${match.url}/${search}`}>
          <button>
             Search
@@ -195,22 +196,22 @@ let match = useRouteMatch();
                   <TableCell>{e.symbol}</TableCell>
                   <TableCell>{e.companyName}</TableCell>
                   <TableCell>{e.previousClose}</TableCell>
-                  <TableCell>{e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice + ' - Closed'}</TableCell>
+                  <TableCell>{e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice + ' - Closed'}</TableCell>
                   <TableCell
                     style={{
                       color:
-                        e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice > e.previousClose
+                        e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice > e.previousClose
                           ? "green"
-                          : e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice < e.previousClose
+                          : e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice < e.previousClose
                           ? "red"
                           : "black",
                     }}
                   >
                     <i
                       className={
-                        e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice > e.previousClose
+                        e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice > e.previousClose
                           ? "fas fa-caret-up"
-                          : e.iexRealtimePrice ? e.iexRealtimePrice : e.latestPrice < e.previousClose
+                          : e.isUSMarketOpen ? e.iexRealtimePrice : e.latestPrice < e.previousClose
                           ? "fas fa-caret-down"
                           : ""
                       }
