@@ -14,9 +14,7 @@
       "balance": 168137,
       "createdAt": "2019-08-27T23:47:05.637Z",
       "modifiedAt": "2020-05-21T11:02:22.857Z",
-      "privileges": [
-        "manager"
-      ]
+      "privileges": ["manager"]
     },
     {
       "id": "TfJK_4UnN",
@@ -25,13 +23,10 @@
       "lastName": "asdf",
       "username": "zach",
       "password": "$2a$10$ie6yIJjzG/V9SM3XyfEuHe6q.RtfUgQSsSjPTZ2T5uuWKhi8sMJ2a",
-      "balance": 4988000,
+      "balance": 5000000,
       "createdAt": "2020-10-21T11:02:50.568Z",
       "modifiedAt": "2020-10-21T11:02:50.568Z",
-      "privileges": [
-        "manager",
-        "business"
-      ]
+      "privileges":  ["manager","business"]
     },
     {
       "id": "qywYp6hS0U",

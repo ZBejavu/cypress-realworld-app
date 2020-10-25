@@ -37,6 +37,9 @@ require("dotenv").config();
 
 const STOCKS = "stocks";
 const INVESTMENTS = "investments";
+const CHART = "chart";
+const NEWS = "news";
+const QUOTE = "quote";
 
 const databaseFile = path.join(__dirname, "../data/stockmarket.json");
 const adapter = new FileSync<SmSchema>(databaseFile);
@@ -101,10 +104,10 @@ try{
 
 router.delete("/invest/:symbol/:userId", (req, res) => {
   const { symbol, userId } = req.params;
-  const { balance } = req.headers;
+  const investment = db.get(INVESTMENTS).find({ symbol, userId }).value();
   db.get(INVESTMENTS).remove({ symbol, userId }).write();
-  updateUserById(userId, {balance: Number(balance)})
-  return res.status(200).json({deleted: true});
+  // add to balance
+  return res.status(200).json({amount: investment.amount / investment.bidPrice});
 });
 
 
@@ -121,13 +124,39 @@ router.patch("/invest/:symbol/:userId", (req, res) => {
   return res.status(200).json({ updated: true });
 });
 
-// async function getChartData(){
-// const stocks = db.get(STOCKS)
-// for (let stock of stocks)
-// const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=chart&chartLast=1&range=1d&token=${process.env.api_TOKEN}`)
-// }
+// interval fetch data from API
 
-// setInterval(getChartData, 3000);
+async function getChartData(){ // per 10 stocks = 100 messages a day
+const stocks = db.get(STOCKS).value();
+for (let stock of stocks){
+if(stock.chart[stock.chart.length - 1].date.substr(8,2) !== new Date().getUTCDate().toString()){
+const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=chart&chartLast=1&range=1m&token=${process.env.api_TOKEN}`)
+if(stock.chart[stock.chart.length - 1].date !== data.date){
+db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).get(CHART).push(data.chart).write();
+}}}
+}
+
+async function getNewsData(){ // per 10 stocks = 200 messages a day
+const stocks = db.get(STOCKS).value();
+for (let stock of stocks){
+const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=news&token=${process.env.api_TOKEN}`)
+db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).assign(data).write();
+}}
+
+async function getQuoteData(){ // per 10 stocks - 80 messages a day
+const stocks = db.get(STOCKS).value();
+for (let stock of stocks){
+const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=quote&token=${process.env.api_TOKEN}`)
+db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).assign(data).write();
+}
+}
+
+// getQuoteData()
+// setInterval(getQuoteData, 1000 * 60 * 60 * 3); 
+// getNewsData()
+// setInterval(getNewsData, 1000 * 60 * 60 * 12);  
+// getChartData()
+// setInterval(getChartData, 1000 * 60 * 60 * 24); 
 
 /*
 
