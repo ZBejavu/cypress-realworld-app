@@ -16,7 +16,7 @@ import commentRoutes from "./comment-routes";
 import notificationRoutes from "./notification-routes";
 import bankTransferRoutes from "./banktransfer-routes";
 import testDataRoutes from "./testdata-routes";
-import investmentsRoutes from "./invesments-routes";
+import investmentsRoutes from "./investments-routes";
 import managerRoutes from "./manager";
 import axios from 'axios'
 import ngrok from 'ngrok'

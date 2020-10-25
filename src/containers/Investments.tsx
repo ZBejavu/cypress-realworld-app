@@ -46,9 +46,9 @@ let match = useRouteMatch();
     `http://localhost:3001/investments/stocks`
     );
     /* data gets us the "quote" object requested from the api. "...batch?types=quote..." */
-    for (const [key, value] of Object.entries<any>(data.stocks)) {
+    for (let stock of data) {
       /* Destructuring the actual information from the api and updating the table */
-      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice }: FinanceData = value.quote;
+      let { symbol, companyName, iexRealtimePrice, previousClose, latestPrice }: FinanceData = stock.quote;
       let growth: number = Number((iexRealtimePrice ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
       dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice });
     }

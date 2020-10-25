@@ -31,6 +31,7 @@ changeOverTime: number;
 }
 
 export interface Quote {
+symbol:string,
 companyName:string,
 primaryExchange:string,
 calculationPrice:string,

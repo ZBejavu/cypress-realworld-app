@@ -53,29 +53,29 @@ const adapter = new FileSync<SmSchema>(databaseFile);
 
 const db = low(adapter);
 
-const getAllStocks = () => db.value();
-const getOneStock = (stock:string) => db.get(stock).value();
-
 router.get("/stocks", (req, res) => {
-  const stocks = getAllStocks();
+  const stocks = db
+  .get(STOCKS)
+  .value()
   res.status(200);
-  res.json({ stocks });
+  res.json(stocks);
 });
 
 router.get("/stocks/:symbol", async (req, res) => {
 let { symbol } = req.params
 symbol = symbol.toUpperCase();
 try{
-  const stock = getOneStock(symbol);
+  const stock = db.get(STOCKS).find({quote: {symbol: symbol}}).value();
   if (stock) {
   res.status(200)
-  return res.json({ stock });
+  return res.json(stock);
   }
   const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/batch?types=quote,news,chart&token=${process.env.api_TOKEN}`)
-  db.set(data.quote.symbol, data).write();
+  db.get(STOCKS).push(data).write();
   res.status(200).json({stock: db.get(symbol)})
 } catch(error) {res.json(error)}
 });
+
 
 /*
 

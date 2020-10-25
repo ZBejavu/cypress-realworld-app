@@ -21,7 +21,5 @@ export interface DbSchema {
 
 
 export interface SmSchema {
-  [index:number]:{
-  [key: string]: Stock
-  }
+stocks: Stock[]
 }
