@@ -12,6 +12,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { Link as RouterLink, useRouteMatch, Route } from "react-router-dom";
+import CompareModal from '../components/CompareModal';
+
 
 export interface UserSettingsProps {
   authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
@@ -23,9 +25,11 @@ const Investments: React.FC<UserSettingsProps> = ({ authService }) => {
   const [orderBy, setOrderBy] = useState<
     "symbol" | "companyName" | "iexRealtimePrice" | "previousClose" | "growth"
   >("companyName");
-  const [companyToCompare, setCompanyToCompare] = useState<FinanceData[]>([]);
+  const [companyLastMonthStock, setCompanyLastMonthStock] = useState<FinanceDataChart[]>([]);
+  const [companyToCompare, setCompanyToCompare] = useState<FinanceDataChart[]>([]);
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
 let match = useRouteMatch();
 
@@ -41,13 +45,21 @@ let match = useRouteMatch();
     growth: number;
   }
 
+  interface FinanceDataChart {
+    name: string;
+    chart: any[]
+  }
+
   // console.log("api", process.env.API_KEY);
 
   const fetchData = async () => {
     let dataTable: FinanceData[] = [];
+    let chartsData: FinanceDataChart[] = [];
     const { data } = await axios.get(
     `http://localhost:3001/investments/stocks`
     );
+    console.log(data);
+    
     /* data gets us the "quote" object requested from the api. "...batch?types=quote..." */
     for (let stock of data) {
       /* Destructuring the actual information from the api and updating the table */
@@ -55,7 +67,15 @@ let match = useRouteMatch();
       let growth: number = Number((iexRealtimePrice ? iexRealtimePrice : latestPrice / previousClose * 100 - 100).toFixed(3));
       dataTable.push({ symbol, companyName, iexRealtimePrice, previousClose, growth, latestPrice });
     }
+    for (let stock of data) {
+      let object : FinanceDataChart = {
+        name: stock.quote.companyName,
+        chart: stock.chart
+      }
+      chartsData.push(object);
+    }
     setFinanceDataTable(dataTable);
+    setCompanyLastMonthStock(chartsData);
   };
 
   // console.log(financeDataTable);
@@ -123,17 +143,17 @@ let match = useRouteMatch();
       <select
         multiple
       >
-        {financeDataTable.map((object) => (
+        {companyLastMonthStock.map((object) => (
           <option
-            key={object.companyName}
-            value={object.companyName}
+            key={object.name}
+            value={object.name}
             onClick={() => setCompanyToCompare([...companyToCompare, object])}
           >
-            {object.companyName}
+            {object.name}
           </option>
         ))}
       </select>
-      <button>Compare</button>
+      <button onClick={()=>setOpenModal(true)}>Compare</button>
       <TableContainer>
         <Table size="small" style={{ border: "1px solid #DDDDDD" }}>
           <TableHead>
@@ -205,6 +225,7 @@ let match = useRouteMatch();
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </TableContainer>
+      <CompareModal companyToCompare={companyToCompare} openModal={openModal} />
     </div>
   );
 };
