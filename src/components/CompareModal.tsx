@@ -2,8 +2,6 @@ import React from 'react';
 import Charts from '../charts/Charts';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-// import { ChartData } from "./ChartsInterface";
-// import { State } from "./ChartsInterface";
 
 interface FinanceDataChart {
     name: string;
@@ -14,6 +12,7 @@ interface Props {
     companyToCompare: FinanceDataChart[];
     openModal: boolean;
     setOpenModal: (x: boolean) => void;
+    setCompanyToCompare: (x: FinanceDataChart[]) => void;
 }
 
 let colors: string[] = ['red', 'blue', 'green', 'yellow', 'pink', 'brown', 'orange', 'violet', 'maroon', 'cyan'];
@@ -46,10 +45,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CompareModal: React.FC<Props> = ({ companyToCompare, openModal, setOpenModal }) => {
+const CompareModal: React.FC<Props> = ({ companyToCompare, setCompanyToCompare, openModal, setOpenModal }) => {
     const classes = useStyles();
 
-    const handleClose = () => setOpenModal(false);
+    const handleClose = () => {
+        setOpenModal(false);
+        setCompanyToCompare([]);
+    }
 
     const rawData = companyToCompare.map((company, i) => {
         return (
