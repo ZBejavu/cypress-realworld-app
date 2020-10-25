@@ -126,9 +126,6 @@ const ManagerTab: React.FC<UserSettingsProps> = ({ authService }) => {
         </TableBody>
       </Table>
     </TableContainer>
-      {allUsers.map((user, i) => {
-        return <div key={i}>{user.username}</div>;
-      })}
     </div>
   );
 };

@@ -79,8 +79,6 @@ try{
 
 /*
 
-
-
 router.get("/stocks/webhook", (req, res) => {
 const event = req.body
 const { data } = req.body
