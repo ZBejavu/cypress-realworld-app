@@ -31,9 +31,9 @@ useEffect(() => {
     const { data } = await axios.get(
       `http://localhost:3001/investments/stocks/${symbolId}`
     );
-      setCharts(data.stock.chart);
-      setNews(data.stock.news);
-      setQuote(data.stock.quote);
+      setCharts(data.chart);
+      setNews(data.news);
+      setQuote(data.quote);
     };
     fetchData();
 }, [])
