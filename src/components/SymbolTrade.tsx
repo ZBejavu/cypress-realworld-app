@@ -124,10 +124,10 @@ await axios.patch(
 {investment && 
 <>
 <h2>Your Investment:</h2>
-<p>Amount: {investment.amount}</p>
-<p>Initial bid price: {investment.bidPrice}</p>
-<p>Current bid's value: {((investment.amount / investment.bidPrice) * quote.latestPrice).toFixed(3)}</p>
-<p>Earnings: 
+<p><strong>Amount: </strong> {investment.amount}</p>
+<p><strong>Initial bid price: </strong>{investment.bidPrice}</p>
+<p><strong>Current bid's value: </strong> {((investment.amount / investment.bidPrice) * quote.latestPrice).toFixed(3)}</p>
+<p><strong>Earnings: </strong> 
 <span style={{
                        color:
                           investment.bidPrice < quote.latestPrice
