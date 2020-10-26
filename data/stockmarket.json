@@ -375,19 +375,6 @@
           "changePercent": -1.2119,
           "label": "Oct 23",
           "changeOverTime": 0.084685
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 420.59,
-          "low": 420.1,
-          "open": 420.12,
-          "close": 420.57,
-          "average": 420.374,
-          "volume": 4162,
-          "notional": 1749598.25,
-          "numberOfTrades": 82
         }
       ],
       "news": [
@@ -935,19 +922,6 @@
           "changePercent": -0.192,
           "label": "Oct 23",
           "changeOverTime": 0.058255
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 228.68,
-          "low": 228.52,
-          "open": 228.68,
-          "close": 228.62,
-          "average": 228.609,
-          "volume": 3224,
-          "notional": 737035,
-          "numberOfTrades": 58
         }
       ],
       "news": [
@@ -1495,19 +1469,6 @@
           "changePercent": 0.8815,
           "label": "Oct 23",
           "changeOverTime": 0.061133
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 3205.61,
-          "low": 3203.01,
-          "open": 3204.38,
-          "close": 3204.11,
-          "average": 3204.221,
-          "volume": 3176,
-          "notional": 10176605.11,
-          "numberOfTrades": 91
         }
       ],
       "news": [
@@ -2055,19 +2016,6 @@
           "changePercent": 2.3982,
           "label": "Oct 23",
           "changeOverTime": 0.141306
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 285.205,
-          "low": 284.9,
-          "open": 285.16,
-          "close": 284.93,
-          "average": 285.04,
-          "volume": 22907,
-          "notional": 6529412.285,
-          "numberOfTrades": 175
         }
       ],
       "news": [
@@ -2617,19 +2565,6 @@
           "changePercent": -0.6134,
           "label": "Oct 23",
           "changeOverTime": 0.06302
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 115.045,
-          "low": 114.91,
-          "open": 114.995,
-          "close": 115.03,
-          "average": 115.002,
-          "volume": 14646,
-          "notional": 1684313.5,
-          "numberOfTrades": 132
         }
       ],
       "news": [
@@ -3177,19 +3112,6 @@
           "changePercent": 2.0677,
           "label": "Oct 23",
           "changeOverTime": 0.160965
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 38.015,
-          "low": 37.99,
-          "open": 38.01,
-          "close": 38.015,
-          "average": 38.003,
-          "volume": 3147,
-          "notional": 119595.815,
-          "numberOfTrades": 23
         }
       ],
       "news": [
@@ -3737,19 +3659,6 @@
           "changePercent": -10.5751,
           "label": "Oct 23",
           "changeOverTime": -0.019528
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 48.2,
-          "low": 48.1,
-          "open": 48.115,
-          "close": 48.2,
-          "average": 48.122,
-          "volume": 26958,
-          "notional": 1297265.875,
-          "numberOfTrades": 135
         }
       ],
       "news": [
@@ -4297,19 +4206,6 @@
           "changePercent": 4.3102,
           "label": "Oct 23",
           "changeOverTime": 0.376981
-        },
-        {
-          "date": "2020-10-23",
-          "minute": "15:59",
-          "label": "3:59 PM",
-          "high": 53.11,
-          "low": 53,
-          "open": 53.045,
-          "close": 53,
-          "average": 53.084,
-          "volume": 3549,
-          "notional": 188396.575,
-          "numberOfTrades": 45
         }
       ],
       "news": [

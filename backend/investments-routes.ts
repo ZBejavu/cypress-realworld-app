@@ -128,12 +128,13 @@ router.patch("/invest/:symbol/:userId", (req, res) => {
 
 async function getChartData(){ // per 10 stocks = 100 messages a day
 const stocks = db.get(STOCKS).value();
+fetchLoop:
 for (let stock of stocks){
 if(stock.chart[stock.chart.length - 1].date.substr(8,2) !== new Date().getUTCDate().toString()){
 const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=chart&chartLast=1&range=1m&token=${process.env.api_TOKEN}`)
-if(stock.chart[stock.chart.length - 1].date !== data.date){
+if(stock.chart[stock.chart.length - 1].date === data.date) break fetchLoop;
 db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).get(CHART).push(data.chart).write();
-}}}
+}}
 }
 
 async function getNewsData(){ // per 10 stocks = 200 messages a day
