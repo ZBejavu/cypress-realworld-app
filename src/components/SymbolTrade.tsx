@@ -124,9 +124,9 @@ await axios.patch(
 {investment && 
 <>
 <h2>Your Investment:</h2>
-<p><strong>Amount: </strong> {investment.amount}</p>
-<p><strong>Initial bid price: </strong>{investment.bidPrice}</p>
-<p><strong>Current bid's value: </strong> {((investment.amount / investment.bidPrice) * quote.latestPrice).toFixed(3)}</p>
+<p><strong>Amount: </strong> {investment.amount}$</p>
+<p><strong>Initial bid price: </strong>{investment.bidPrice}$</p>
+<p><strong>Current bid's value: </strong> {((investment.amount / investment.bidPrice) * quote.latestPrice).toFixed(3)}$</p>
 <p><strong>Earnings: </strong> 
 <span style={{
                        color:
@@ -137,8 +137,8 @@ await axios.patch(
                           : "black",
                     }}>
 {(investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount > 0 ? 
-+ ((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3) :
-((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3)
+'+' + ((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3) + '$' :
+((investment.amount / investment.bidPrice) * quote.latestPrice - investment.amount).toFixed(3) + '$'
 }
 </span>
 </p>
