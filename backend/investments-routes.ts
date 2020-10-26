@@ -132,8 +132,8 @@ fetchLoop:
 for (let stock of stocks){
 if(stock.chart[stock.chart.length - 1].date.substr(8,2) !== new Date().getUTCDate().toString()){
 const { data } = await axios.get(`https://cloud.iexapis.com/stable/stock/${stock.quote.symbol}/batch?types=chart&chartLast=1&range=1m&token=${process.env.api_TOKEN}`)
-if(stock.chart[stock.chart.length - 1].date === data.date) break fetchLoop;
-db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).get(CHART).push(data.chart).write();
+if(stock.chart[stock.chart.length - 1].date === data.chart[0].date) break fetchLoop;
+db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).get(CHART).push(data.chart[0]).write();
 }}
 }
 
@@ -152,9 +152,9 @@ db.get(STOCKS).find({ quote: { symbol: stock.quote.symbol } }).assign(data).writ
 }
 }
 
-// getQuoteData()
+//  getQuoteData()
 // setInterval(getQuoteData, 1000 * 60 * 60 * 3); 
-// getNewsData()
+//  getNewsData()
 // setInterval(getNewsData, 1000 * 60 * 60 * 12);  
 // getChartData()
 // setInterval(getChartData, 1000 * 60 * 60 * 24); 
